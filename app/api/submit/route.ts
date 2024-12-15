@@ -6,7 +6,7 @@ const googleSheets = sheets({ version: 'v4', auth: googleAuth });
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 type FormBodyType = {
-  username: string;
+  name: string;
   password: string;
   qualifyingFirst: string;
   qualifyingSecond: string;
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
   // Authenticate user
   const isValidUser = players.some(
-    (player) => player[0] === body.username && player[1] === body.password
+    (player) => player[0] === body.name && player[1] === body.password
   );
 
   if (!isValidUser) {
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
   try {
     const values = [
-      [body.username, undefined],
+      [body.name, undefined],
       [body.qualifyingFirst, body.raceFirst],
       [body.qualifyingSecond, body.raceSecond],
       [body.qualifyingThird, body.raceThird],
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     // Append data to Google Sheet
     await googleSheets.spreadsheets.values.update({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: `Inputs!${ranges[body.username][0]}1:${ranges[body.username][1]}4`,
+      range: `Inputs!${ranges[body.name][0]}1:${ranges[body.name][1]}4`,
       valueInputOption: 'USER_ENTERED',
       requestBody: { values },
     });
