@@ -1,13 +1,8 @@
-import { sheets, auth } from '@googleapis/sheets';
+import { googleAuth } from '@/app/auth/googleAuth';
+import { sheets } from '@googleapis/sheets';
 import { NextResponse } from 'next/server';
 
-// TODO: Extract to do auth once only
-const authRequest = new auth.GoogleAuth({
-  keyFilename: 'googlekey.json',
-  scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-});
-
-const googleSheets = sheets({ version: 'v4', auth: authRequest });
+const googleSheets = sheets({ version: 'v4', auth: googleAuth });
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 export async function GET() {

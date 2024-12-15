@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
-import { sheets, auth } from '@googleapis/sheets';
+import { sheets } from '@googleapis/sheets';
+import { googleAuth } from '@/app/auth/googleAuth';
 
-const authRequest = new auth.GoogleAuth({
-  keyFilename: 'googlekey.json',
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-
-const googleSheets = sheets({ version: 'v4', auth: authRequest });
+const googleSheets = sheets({ version: 'v4', auth: googleAuth });
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
 
 type FormBodyType = {
