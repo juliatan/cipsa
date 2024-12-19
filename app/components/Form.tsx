@@ -1,29 +1,72 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
+import { useFormStatus } from 'react-dom';
+import { submitForm } from '../actions/submitForm';
+import type {
+  OptionsType,
+  PlayerName,
+  QualifyingOrRaceField,
+  SubmitFormData,
+  SubmitFormState,
+} from '../types';
 
-type OptionsType = string[];
-
-const QUALIFYING_FIELDS = [
+const QUALIFYING_FIELDS: QualifyingOrRaceField[] = [
   { id: 'qualifyingFirst', label: 'Qualifying first position' },
   { id: 'qualifyingSecond', label: 'Qualifying second position' },
   { id: 'qualifyingThird', label: 'Qualifying third position' },
 ];
 
-const RACE_FIELDS = [
+const RACE_FIELDS: QualifyingOrRaceField[] = [
   { id: 'raceFirst', label: 'Race first position' },
   { id: 'raceSecond', label: 'Race second position' },
   { id: 'raceThird', label: 'Race third position' },
 ];
 
+const INITIAL_FORM_DATA: SubmitFormData = {
+  name: '' as PlayerName,
+  password: '',
+  qualifyingFirst: '',
+  qualifyingSecond: '',
+  qualifyingThird: '',
+  raceFirst: '',
+  raceSecond: '',
+  raceThird: '',
+};
+
+const initialState: SubmitFormState = {
+  message: '',
+  error: '',
+  formData: INITIAL_FORM_DATA,
+};
+
+const SubmitButton: React.FC = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white disabled:opacity-50"
+      disabled={pending}
+      aria-disabled={pending}
+    >
+      {pending ? 'Submitting...' : 'Submit'}
+    </button>
+  );
+};
+
 export const Form = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [state, formAction] = useActionState<SubmitFormState, FormData>(
+    submitForm,
+    initialState
+  );
+
+  const { pending } = useFormStatus();
 
   const [playerOptions, setPlayerOptions] = useState<OptionsType>([]);
   const [driverOptions, setDriverOptions] = useState<OptionsType>([]);
 
-  // TODO: think about where this call should be made
+  // TODO: can this be done from the server?
   useEffect(() => {
     const fetchFormOptions = async () => {
       const response = await fetch('/api/form-options');
@@ -34,44 +77,30 @@ export const Form = () => {
     fetchFormOptions();
   }, []);
 
-  const renderSelect = (name: string, label: string) => (
-    <div>
-      <select
-        name={name}
-        id={name}
-        className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
-      >
-        <option value="">{label}</option>
-        {driverOptions.map((driver) => (
-          <option key={driver} value={driver}>
-            {driver}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // TODO: use form actions
-    event.preventDefault();
-    setIsLoading(true);
-    setMessage('');
-
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch('/api/submit', {
-      method: 'POST',
-      body: JSON.stringify(Object.fromEntries(formData)),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const result = await response.json();
-    setMessage(result.message);
-    setIsLoading(false);
+  const renderSelect = (
+    name: keyof typeof INITIAL_FORM_DATA,
+    label: string
+  ) => {
+    return (
+      <div>
+        <select
+          name={name}
+          id={name}
+          defaultValue={state.formData[name] || ''}
+          className="w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
+        >
+          <option value="">{label}</option>
+          {driverOptions.map((driver) => (
+            <option key={driver} value={driver}>
+              {driver}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
   };
 
-  // TODO: Fix form styling
+  // TODO: Fix accessibility
 
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -82,87 +111,60 @@ export const Form = () => {
       </div>
 
       <form
-        onSubmit={handleSubmit}
-        className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+        action={formAction}
+        className="mx-auto mb-0 mt-8 max-w-md space-y-2"
       >
-        <div>
-          <select
-            name="name"
-            id="name"
-            className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
-          >
-            <option value="">Who are you?</option>
-            {playerOptions.map((player) => (
-              <option key={player} value={player}>
-                {player}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          name="name"
+          id="name"
+          defaultValue={state.formData.name || ''}
+          className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
+        >
+          <option value="">Who are you?</option>
+          {playerOptions.map((player) => (
+            <option key={player} value={player}>
+              {player}
+            </option>
+          ))}
+        </select>
 
-        <div>
-          <label htmlFor="password" className="sr-only">
-            Password
-          </label>
+        <label htmlFor="password" className="sr-only">
+          Password
+        </label>
 
-          <div className="relative">
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-              placeholder="Your password"
-            />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          defaultValue={state.formData.password || ''}
+          className="w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
+          placeholder="Your password"
+        />
 
-            <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                />
-              </svg>
-            </span>
+        {QUALIFYING_FIELDS.map((field) => (
+          <div className="" key={field.id}>
+            {renderSelect(field.id, field.label)}
           </div>
+        ))}
 
-          {QUALIFYING_FIELDS.map((field) => (
-            <div className="space-y-4" key={field.id}>
-              {renderSelect(field.id, field.label)}
-            </div>
-          ))}
-
-          {RACE_FIELDS.map((field) => (
-            <div className="space-y-4" key={field.id}>
-              {renderSelect(field.id, field.label)}
-            </div>
-          ))}
-        </div>
+        {RACE_FIELDS.map((field) => (
+          <div className="" key={field.id}>
+            {renderSelect(field.id, field.label)}
+          </div>
+        ))}
 
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-500">
-            {message ? message : 'Ready to go?'}
+            {pending
+              ? 'Submitting...'
+              : state?.error
+              ? state.error
+              : state?.message
+              ? state.message
+              : 'Ready to go?'}
           </p>
 
-          <button
-            type="submit"
-            className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Submitting...' : 'Submit'}
-          </button>
+          <SubmitButton />
         </div>
       </form>
     </div>
