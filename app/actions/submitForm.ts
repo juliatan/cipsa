@@ -23,7 +23,7 @@ export const submitForm = async (
 
   const players = playersData.data.values || [];
   if (players.length === 0) {
-    return { error: 'No data found', formData: data };
+    return { error: 'No data found', formData: { ...data, password: '' } };
   }
 
   const isValidUser = players.some(
@@ -31,7 +31,7 @@ export const submitForm = async (
   );
 
   if (!isValidUser) {
-    return { error: 'Invalid credentials', formData: data };
+    return { error: 'Invalid credentials', formData: {...data, password: ''} };
   }
 
   // TODO: check submission deadline
@@ -61,9 +61,9 @@ export const submitForm = async (
     });
 
     revalidatePath('/');
-    return { message: 'Results submitted successfully', formData: data };
+    return { message: 'Results submitted successfully', formData: {...data, password: ''} };
   } catch (error) {
     console.error('Error submitting results:', error);
-    return { error: 'Error submitting results', formData: data };
+    return { error: 'Error submitting results', formData: {...data, password: ''} };
   }
 };

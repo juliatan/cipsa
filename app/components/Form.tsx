@@ -86,7 +86,7 @@ export const Form = () => {
         <select
           name={name}
           id={name}
-          defaultValue={state.formData[name] || ''}
+          defaultValue={state.formData[name]}
           className="w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
         >
           <option value="">{label}</option>
@@ -101,7 +101,7 @@ export const Form = () => {
   };
 
   // TODO: Fix accessibility
-
+  // TODO: can't seem to get the select option default value to work
   return (
     <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-lg text-center">
@@ -117,7 +117,7 @@ export const Form = () => {
         <select
           name="name"
           id="name"
-          defaultValue={state.formData.name || ''}
+          defaultValue={state.formData.name}
           className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
         >
           <option value="">Who are you?</option>
@@ -136,7 +136,7 @@ export const Form = () => {
           type="password"
           name="password"
           id="password"
-          defaultValue={state.formData.password || ''}
+          defaultValue={state.formData.password}
           className="w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
           placeholder="Your password"
         />
