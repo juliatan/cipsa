@@ -32,4 +32,11 @@ GOOGLE_JWT_PRIVATE_KEY_ID=
 GOOGLE_JWT_PRIVATE_KEY=
 GOOGLE_JWT_CLIENT_EMAIL=
 GOOGLE_JWT_CLIENT_ID=
+DOMAIN=http://localhost:3000
 ```
+
+### Improvements
+
+- Create a proper loading component for React Suspense
+- Add Error Boundary
+- Do not clear form selections if user authentication fails on submit
