@@ -1,44 +1,15 @@
 'use client';
 
 import { submitForm } from '@/app/actions/submitForm';
-import type {
-  OptionsType,
-  PlayerName,
-  QualifyingOrRaceField,
-  SubmitFormData,
-  SubmitFormState,
-} from '@/app/types';
+import {
+  INITIAL_FORM_DATA,
+  INITIAL_STATE,
+  QUALIFYING_FIELDS,
+  RACE_FIELDS,
+} from '@/app/constants';
+import type { OptionsType, SubmitFormState } from '@/app/types';
 import { useActionState, useEffect, useState } from 'react';
 import { useFormStatus } from 'react-dom';
-
-const QUALIFYING_FIELDS: QualifyingOrRaceField[] = [
-  { id: 'qualifyingFirst', label: 'Qualifying first position' },
-  { id: 'qualifyingSecond', label: 'Qualifying second position' },
-  { id: 'qualifyingThird', label: 'Qualifying third position' },
-];
-
-const RACE_FIELDS: QualifyingOrRaceField[] = [
-  { id: 'raceFirst', label: 'Race first position' },
-  { id: 'raceSecond', label: 'Race second position' },
-  { id: 'raceThird', label: 'Race third position' },
-];
-
-const INITIAL_FORM_DATA: SubmitFormData = {
-  name: '' as PlayerName,
-  password: '',
-  qualifyingFirst: '',
-  qualifyingSecond: '',
-  qualifyingThird: '',
-  raceFirst: '',
-  raceSecond: '',
-  raceThird: '',
-};
-
-const initialState: SubmitFormState = {
-  message: '',
-  error: '',
-  formData: INITIAL_FORM_DATA,
-};
 
 const SubmitButton: React.FC = () => {
   const { pending } = useFormStatus();
@@ -58,7 +29,7 @@ const SubmitButton: React.FC = () => {
 export const Form = () => {
   const [state, formAction] = useActionState<SubmitFormState, FormData>(
     submitForm,
-    initialState
+    INITIAL_STATE
   );
 
   const { pending } = useFormStatus();
