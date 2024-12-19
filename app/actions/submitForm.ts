@@ -1,9 +1,9 @@
 'use server';
 
 import { googleAuth } from '@/app/auth/googleAuth';
+import { PlayerName, SubmitFormData, SubmitFormState } from '@/app/types';
 import { sheets } from '@googleapis/sheets';
 import { revalidatePath } from 'next/cache';
-import { PlayerName, SubmitFormData, SubmitFormState } from '../types';
 
 const googleSheets = sheets({ version: 'v4', auth: googleAuth });
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID;
@@ -31,7 +31,10 @@ export const submitForm = async (
   );
 
   if (!isValidUser) {
-    return { error: 'Invalid credentials', formData: {...data, password: ''} };
+    return {
+      error: 'Invalid credentials',
+      formData: { ...data, password: '' },
+    };
   }
 
   // TODO: check submission deadline
@@ -61,9 +64,15 @@ export const submitForm = async (
     });
 
     revalidatePath('/');
-    return { message: 'Results submitted successfully', formData: {...data, password: ''} };
+    return {
+      message: 'Results submitted successfully',
+      formData: { ...data, password: '' },
+    };
   } catch (error) {
     console.error('Error submitting results:', error);
-    return { error: 'Error submitting results', formData: {...data, password: ''} };
+    return {
+      error: 'Error submitting results',
+      formData: { ...data, password: '' },
+    };
   }
 };

@@ -1,15 +1,15 @@
 'use client';
 
-import { useActionState, useEffect, useState } from 'react';
-import { useFormStatus } from 'react-dom';
-import { submitForm } from '../actions/submitForm';
+import { submitForm } from '@/app/actions/submitForm';
 import type {
   OptionsType,
   PlayerName,
   QualifyingOrRaceField,
   SubmitFormData,
   SubmitFormState,
-} from '../types';
+} from '@/app/types';
+import { useActionState, useEffect, useState } from 'react';
+import { useFormStatus } from 'react-dom';
 
 const QUALIFYING_FIELDS: QualifyingOrRaceField[] = [
   { id: 'qualifyingFirst', label: 'Qualifying first position' },
