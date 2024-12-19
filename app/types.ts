@@ -1,4 +1,3 @@
-export type OptionsType = string[];
 export type FieldName =
   | 'name'
   | 'password'

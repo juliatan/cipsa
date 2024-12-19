@@ -31,6 +31,7 @@ export async function GET() {
       return acc;
     }, {} as Record<string, string[]>);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [headersP, ...dataP] = players;
 
     const playerNames: string[] = [];
