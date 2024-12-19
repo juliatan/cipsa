@@ -17,6 +17,19 @@ I decided to build this with NextJS v15 and React v19 to learn more about:
 ## Getting Started
 
 - Clone the repo.
-- Install the modules: `npm install`
-- Run the server: `npm run dev`
+- Install the modules: `yarn install`
+- Run the server: `yarn dev`
 - Go to [http://localhost:3000](http://localhost:3000)
+
+### Environment Vars
+
+You'll need to create a `.env` file to store environment variables:
+
+```bash
+GOOGLE_SHEET_ID=
+GOOGLE_JWT_PROJECT_ID=
+GOOGLE_JWT_PRIVATE_KEY_ID=
+GOOGLE_JWT_PRIVATE_KEY=
+GOOGLE_JWT_CLIENT_EMAIL=
+GOOGLE_JWT_CLIENT_ID=
+```
