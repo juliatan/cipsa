@@ -36,11 +36,6 @@ export const Form = () => {
 
   const renderSelect = (name: string, label: string) => (
     <div>
-      {/* <label htmlFor={name} className="block text-sm font-medium text-gray-900">
-        {' '}
-        {label}
-      </label> */}
-
       <select
         name={name}
         id={name}
@@ -91,11 +86,6 @@ export const Form = () => {
         className="mx-auto mb-0 mt-8 max-w-md space-y-4"
       >
         <div>
-          {/* <label htmlFor={name} className="block text-sm font-medium text-gray-900">
-        {' '}
-        {label}
-      </label> */}
-
           <select
             name="name"
             id="name"
@@ -109,38 +99,6 @@ export const Form = () => {
             ))}
           </select>
         </div>
-        {/* <div>
-          <label htmlFor="name" className="sr-only">
-            Name
-          </label>
-
-          <div className="relative">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
-              placeholder="Your name"
-            />
-
-            <span className="absolute inset-y-0 end-0 grid place-content-center px-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                />
-              </svg>
-            </span>
-          </div>
-        </div> */}
 
         <div>
           <label htmlFor="password" className="sr-only">
@@ -194,7 +152,6 @@ export const Form = () => {
         </div>
 
         <div className="flex items-center justify-between">
-          {/* <p className="text-sm text-gray-500">Ready to go?</p> */}
           <p className="text-sm text-gray-500">
             {message ? message : 'Ready to go?'}
           </p>
@@ -209,44 +166,5 @@ export const Form = () => {
         </div>
       </form>
     </div>
-
-    // <div>
-    //   <h3>Drivers</h3>
-    //   {driverOptions?.map((opt) => (
-    //     <p key={opt}>{opt}</p>
-    //   ))}
-    //   <h3>Players</h3>
-    //   {playerOptions?.map((opt) => (
-    //     <p key={opt}>{opt}</p>
-    //   ))}
-    //   <form onSubmit={handleSubmit} className="space-y-4">
-    //     <div className="space-y-2">
-    //       <label htmlFor="username">User Name</label>
-    //       <input id="username" name="username" required />
-    //     </div>
-    //     <div className="space-y-2">
-    //       <label htmlFor="password">Password</label>
-    //       <input id="password" name="password" type="password" required />
-    //     </div>
-    //     {QUALIFYING_FIELDS.map((field) => (
-    //       <div className="space-y-2" key={field.id}>
-    //         {renderSelect(field.id, field.label)}
-    //       </div>
-    //     ))}
-
-    //     {RACE_FIELDS.map((field) => (
-    //       <div className="space-y-2" key={field.id}>
-    //         {renderSelect(field.id, field.label)}
-    //       </div>
-    //     ))}
-
-    //     <button type="submit" disabled={isLoading}>
-    //       {isLoading ? 'Submitting...' : 'Submit'}
-    //     </button>
-    //   </form>
-    //   {message && (
-    //     <p className="mt-4 text-center font-medium text-sm">{message}</p>
-    //   )}
-    // </div>
   );
 };

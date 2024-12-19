@@ -16,6 +16,8 @@ type FormBodyType = {
   raceThird: string;
 };
 
+type PlayerName = 'Johann' | 'Momo' | 'Oli' | 'Stefania';
+
 export async function POST(request: Request) {
   const body: FormBodyType = await request.json();
 
@@ -51,17 +53,18 @@ export async function POST(request: Request) {
       [body.qualifyingThird, body.raceThird],
     ];
 
-    const ranges = {
+    const ranges: Record<PlayerName, string[]> = {
       Johann: ['A', 'B'],
       Momo: ['D', 'E'],
       Oli: ['G', 'H'],
       Stefania: ['J', 'K'],
     };
 
-    // Append data to Google Sheet
+    const playerName = body.name as PlayerName;
+
     await googleSheets.spreadsheets.values.update({
       spreadsheetId: GOOGLE_SHEET_ID,
-      range: `Inputs!${ranges[body.name][0]}1:${ranges[body.name][1]}4`,
+      range: `Inputs!${ranges[playerName][0]}1:${ranges[playerName][1]}4`,
       valueInputOption: 'USER_ENTERED',
       requestBody: { values },
     });
