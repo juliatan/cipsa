@@ -7,8 +7,8 @@ import {
   QUALIFYING_FIELDS,
   RACE_FIELDS,
 } from '@/app/constants';
-import type { OptionsType, SubmitFormState } from '@/app/types';
-import { useActionState, useEffect, useState } from 'react';
+import type { SubmitFormState } from '@/app/types';
+import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
 const SubmitButton: React.FC = () => {
@@ -27,27 +27,18 @@ const SubmitButton: React.FC = () => {
   );
 };
 
-export const Form = () => {
+type FormProps = {
+  drivers: string[];
+  players: string[];
+};
+
+export const Form: React.FC<FormProps> = ({ drivers, players }) => {
   const [state, formAction] = useActionState<SubmitFormState, FormData>(
     submitForm,
     INITIAL_STATE
   );
 
   const { pending } = useFormStatus();
-
-  const [playerOptions, setPlayerOptions] = useState<OptionsType>([]);
-  const [driverOptions, setDriverOptions] = useState<OptionsType>([]);
-
-  // TODO: can this be done from the server?
-  useEffect(() => {
-    const fetchFormOptions = async () => {
-      const response = await fetch('/api/form-options');
-      const data = await response.json();
-      setDriverOptions(data.options.drivers);
-      setPlayerOptions(data.playerNames);
-    };
-    fetchFormOptions();
-  }, []);
 
   const renderSelect = (
     name: keyof typeof INITIAL_FORM_DATA,
@@ -65,7 +56,7 @@ export const Form = () => {
           className="w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
         >
           <option value="">{label}</option>
-          {driverOptions.map((driver) => (
+          {drivers.map((driver) => (
             <option key={driver} value={driver}>
               {driver}
             </option>
@@ -103,7 +94,7 @@ export const Form = () => {
             className="mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm"
           >
             <option value="">Who are you?</option>
-            {playerOptions.map((player) => (
+            {players.map((player) => (
               <option key={player} value={player}>
                 {player}
               </option>

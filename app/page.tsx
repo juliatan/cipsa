@@ -1,4 +1,5 @@
-import { Form } from '@/app/components/Form';
+import { FormWrapper } from '@/app/components/FormWrapper';
+import { Suspense } from 'react';
 
 export default function Home() {
   return (
@@ -6,7 +7,9 @@ export default function Home() {
       <h1 className="text-3xl font-bold text-center mb-6">
         Race Results Submission
       </h1>
-      <Form />
+      <Suspense fallback={<p>Loading</p>}>
+        <FormWrapper />
+      </Suspense>
     </main>
   );
 }
