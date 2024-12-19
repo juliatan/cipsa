@@ -35,6 +35,9 @@ GOOGLE_JWT_CLIENT_ID=
 DOMAIN=http://localhost:3000
 ```
 
+Note: The `GOOGLE_JWT_PRIVATE_KEY` variable is base64 encoded. You can encode a private key by copying it to your clipboard and running the following command in your terminal:
+`pbpaste | base64 | pbcopy`
+
 ### Improvements
 
 - Create a proper loading component for React Suspense
