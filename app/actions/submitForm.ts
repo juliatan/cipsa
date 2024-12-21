@@ -12,6 +12,8 @@ export const submitForm = async (
   _: SubmitFormState,
   formData: FormData
 ): Promise<SubmitFormState> => {
+
+  // Need to convert FormData to my custom type
   const data = Object.fromEntries(
     formData.entries()
   ) as unknown as SubmitFormData;

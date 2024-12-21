@@ -33,12 +33,10 @@ type FormProps = {
 };
 
 export const Form: React.FC<FormProps> = ({ drivers, players }) => {
-  const [state, formAction] = useActionState<SubmitFormState, FormData>(
+  const [state, formAction, pending] = useActionState<SubmitFormState, FormData>(
     submitForm,
     INITIAL_STATE
   );
-
-  const { pending } = useFormStatus();
 
   const renderSelect = (
     name: keyof typeof INITIAL_FORM_DATA,
